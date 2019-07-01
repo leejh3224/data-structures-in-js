@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 class Node {
   constructor(key, left = null, right = null, parent = null) {
-    if (!key || key < 0) {
+    if (!key || typeof key !== 'number') {
       throw new Error('key is invalid!');
     }
 
@@ -16,6 +16,21 @@ class BinarySearchTree {
   constructor(root = null) {
     this.root = root;
     this.nodes = [];
+  }
+
+  // utility method for testing
+  static build(keys) {
+    if (!keys || !keys.length) {
+      throw new Error('keys must not be empty!');
+    }
+
+    const bst = new BinarySearchTree();
+
+    keys.forEach((key) => {
+      bst.insert(key);
+    });
+
+    return bst;
   }
 
   /**
@@ -44,8 +59,20 @@ class BinarySearchTree {
     });
   }
 
-  find() {
-    this.x = '';
+  find(key, entry = this.root) {
+    if (!entry) {
+      throw new Error('key not found!');
+    }
+
+    if (key > entry.key) {
+      return this.find(key, entry.right);
+    }
+
+    if (key < entry.key) {
+      return this.find(key, entry.left);
+    }
+
+    return key;
   }
 
   insert(key, entry = this.root) {
@@ -78,6 +105,22 @@ class BinarySearchTree {
         }
       }
     }
+  }
+
+  findMin(entry = this.root) {
+    if (entry.left) {
+      return this.findMin(entry.left);
+    }
+
+    return entry.key;
+  }
+
+  findMax(entry = this.root) {
+    if (entry.right) {
+      return this.findMax(entry.right);
+    }
+
+    return entry.key;
   }
 }
 

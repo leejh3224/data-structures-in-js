@@ -17,11 +17,35 @@ describe('binary search tree', () => {
     expect(bst.checkRI()).toBeTruthy();
   });
 
-  it.todo('find');
+  it('find', () => {
+    const bst = BinarySearchTree.build([99, 67, 102, 62]);
 
-  it.todo('find_min');
+    const key = bst.find(67);
 
-  it.todo('find_max');
+    expect(key).toBe(67);
+
+    try {
+      bst.find(999);
+    } catch (error) {
+      expect(error.message).toBe('key not found!');
+    }
+  });
+
+  it('find_min', () => {
+    const bst = BinarySearchTree.build([99, 67, 102, 62]);
+
+    const min = bst.findMin();
+
+    expect(min).toBe(62);
+  });
+
+  it('find_max', () => {
+    const bst = BinarySearchTree.build([99, 67, 102, 62]);
+
+    const max = bst.findMax();
+
+    expect(max).toBe(102);
+  });
 
   it.todo('next_larger');
 
