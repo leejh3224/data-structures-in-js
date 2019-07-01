@@ -20,8 +20,8 @@ class BinarySearchTree {
 
   /**
    * checks RI (representation invariant) of BST
-   * 1. key of the left subtree must be smaller or equal to key of the node
-   * 2. key of the right subtree must be bigger or equal to key of the node
+   * 1. key of the left subtree must be less than or equal to key of the node
+   * 2. key of the right subtree must be greater than or equal to key of the node
    */
   checkRI() {
     return this.nodes.every((node) => {
@@ -35,6 +35,7 @@ class BinarySearchTree {
         invariant = node.key <= node.right.key;
       }
 
+      // root / leaf of the tree
       if (!node.left && !node.right) {
         invariant = true;
       }
