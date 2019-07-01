@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 class Node {
   constructor(key, left = null, right = null, parent = null) {
     if (!key || typeof key !== 'number') {
@@ -72,7 +71,7 @@ class BinarySearchTree {
       return this.find(key, entry.left);
     }
 
-    return key;
+    return entry;
   }
 
   insert(key, entry = this.root) {
@@ -91,14 +90,20 @@ class BinarySearchTree {
 
       if (key > entry.key) {
         if (!entry.right) {
-          entry.right = new Node(key);
+          const right = new Node(key);
+          // eslint-disable-next-line no-param-reassign
+          entry.right = right;
+          right.parent = entry;
           this.nodes.push(entry.right);
         } else {
           this.insert(key, entry.right);
         }
       } else if (key < entry.key) {
         if (!entry.left) {
-          entry.left = new Node(key);
+          const left = new Node(key);
+          // eslint-disable-next-line no-param-reassign
+          entry.left = left;
+          left.parent = entry;
           this.nodes.push(entry.left);
         } else {
           this.insert(key, entry.left);
@@ -112,7 +117,7 @@ class BinarySearchTree {
       return this.findMin(entry.left);
     }
 
-    return entry.key;
+    return entry;
   }
 
   findMax(entry = this.root) {
@@ -120,7 +125,49 @@ class BinarySearchTree {
       return this.findMax(entry.right);
     }
 
-    return entry.key;
+    return entry;
+  }
+
+  nextLarger(node) {
+    if (node.right) {
+      return this.findMin(node.right);
+    }
+
+    let current = node;
+
+    // keep going left up until it can't
+    while (current.parent && current === current.parent.right) {
+      current = current.parent;
+    }
+
+    if (!current.parent) {
+      throw new Error('bigger node not exists');
+    }
+
+    return current.parent;
+  }
+
+  nextSmaller(node) {
+    if (node.left) {
+      return this.findMax(node.left);
+    }
+
+    let current = node;
+
+    // keep going right up until it can't
+    while (current.parent && current === current.parent.left) {
+      current = current.parent;
+    }
+
+    if (!current.parent) {
+      throw new Error('smaller node not exists');
+    }
+
+    return current.parent;
+  }
+
+  delete() {
+    this.x = '';
   }
 }
 

@@ -20,9 +20,9 @@ describe('binary search tree', () => {
   it('find', () => {
     const bst = BinarySearchTree.build([99, 67, 102, 62]);
 
-    const key = bst.find(67);
+    const node = bst.find(67);
 
-    expect(key).toBe(67);
+    expect(node.key).toBe(67);
 
     try {
       bst.find(999);
@@ -36,7 +36,7 @@ describe('binary search tree', () => {
 
     const min = bst.findMin();
 
-    expect(min).toBe(62);
+    expect(min.key).toBe(62);
   });
 
   it('find_max', () => {
@@ -44,12 +44,54 @@ describe('binary search tree', () => {
 
     const max = bst.findMax();
 
-    expect(max).toBe(102);
+    expect(max.key).toBe(102);
   });
 
-  it.todo('next_larger');
+  it('next_larger', () => {
+    const bst = BinarySearchTree.build([99, 67, 102, 62]);
 
-  it.todo('next_smaller');
+    // casee 1: no right subtree
+    const node = bst.find(62);
+
+    expect(bst.nextLarger(node).key).toBe(67);
+
+    // case 2: has right subtree
+    const node2 = bst.find(99);
+
+    expect(bst.nextLarger(node2).key).toBe(102);
+
+    // case3: self is biggest node
+    try {
+      const node3 = bst.find(102);
+
+      bst.nextLarger(node3);
+    } catch (error) {
+      expect(error.message).toBe('bigger node not exists');
+    }
+  });
+
+  it('next_smaller', () => {
+    const bst = BinarySearchTree.build([99, 67, 102, 62]);
+
+    // casee 1: no left subtree
+    const node = bst.find(102);
+
+    expect(bst.nextSmaller(node).key).toBe(99);
+
+    // case 2: has left subtree
+    const node2 = bst.find(67);
+
+    expect(bst.nextSmaller(node2).key).toBe(62);
+
+    // case3: self is smallest node
+    try {
+      const node3 = bst.find(62);
+
+      bst.nextSmaller(node3);
+    } catch (error) {
+      expect(error.message).toBe('smaller node not exists');
+    }
+  });
 
   it.todo('delete');
 });
