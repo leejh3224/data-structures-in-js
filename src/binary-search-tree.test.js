@@ -104,4 +104,17 @@ describe('binary search tree', () => {
     expect(bst.getNodes).toHaveLength(2);
     expect(bst.checkRI()).toBeTruthy();
   });
+
+  it('traserve', () => {
+    const bst = BinarySearchTree.build([99, 67, 102, 62, 60, 65]);
+
+    console.log('start in-order traversal');
+    bst.traverseInOrder(bst.root);
+
+    console.log('start pre-order traversal');
+    bst.traversePreOrder(bst.root);
+
+    console.log('start post-order traversal');
+    bst.traversePostOrder(bst.root);
+  });
 });

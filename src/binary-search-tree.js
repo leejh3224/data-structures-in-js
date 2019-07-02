@@ -1,15 +1,4 @@
-class Node {
-  constructor(key, left = null, right = null, parent = null) {
-    if (!key || typeof key !== 'number') {
-      throw new Error('key is invalid!');
-    }
-
-    this.key = key;
-    this.left = left;
-    this.right = right;
-    this.parent = parent;
-  }
-}
+const Node = require('./base-node');
 
 class BinarySearchTree {
   constructor(root = null) {
@@ -241,6 +230,27 @@ class BinarySearchTree {
     // eslint-disable-next-line no-param-reassign
     node.key = tmp;
     return this.delete(nextLarger);
+  }
+
+  traverseInOrder(node) {
+    if (!node) return;
+    this.traverseInOrder(node.left);
+    console.log(node.key);
+    this.traverseInOrder(node.right);
+  }
+
+  traversePreOrder(node) {
+    if (!node) return;
+    console.log(node.key);
+    this.traversePreOrder(node.left);
+    this.traversePreOrder(node.right);
+  }
+
+  traversePostOrder(node) {
+    if (!node) return;
+    this.traversePostOrder(node.left);
+    this.traversePostOrder(node.right);
+    console.log(node.key);
   }
 }
 
