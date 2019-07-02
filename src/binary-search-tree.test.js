@@ -24,11 +24,9 @@ describe('binary search tree', () => {
 
     expect(node.key).toBe(67);
 
-    try {
-      bst.find(999);
-    } catch (error) {
-      expect(error.message).toBe('key not found!');
-    }
+    const node2 = bst.find(999);
+
+    expect(node2).toBe(null);
   });
 
   it('find_min', () => {
@@ -93,5 +91,17 @@ describe('binary search tree', () => {
     }
   });
 
-  it.todo('delete');
+  it('delete', () => {
+    const bst = BinarySearchTree.build([99, 67, 102, 62, 60, 65]);
+
+    expect(bst.checkRI()).toBeTruthy();
+
+    bst.delete(bst.find(62));
+    bst.delete(bst.find(60));
+    bst.delete(bst.find(65));
+    bst.delete(bst.find(102));
+
+    expect(bst.getNodes).toHaveLength(2);
+    expect(bst.checkRI()).toBeTruthy();
+  });
 });

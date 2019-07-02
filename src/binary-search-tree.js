@@ -17,6 +17,10 @@ class BinarySearchTree {
     this.nodes = [];
   }
 
+  get getNodes() {
+    return this.nodes.filter((node) => node !== null);
+  }
+
   // utility method for testing
   static build(keys) {
     if (!keys || !keys.length) {
@@ -38,7 +42,7 @@ class BinarySearchTree {
    * 2. key of the right subtree must be greater than or equal to key of the node
    */
   checkRI() {
-    return this.nodes.every((node) => {
+    return this.getNodes.every((node) => {
       let invariant = false;
 
       if (node.left) {
@@ -58,9 +62,13 @@ class BinarySearchTree {
     });
   }
 
+  /**
+   * Time Complexity
+   * Binary Search takes O(lg N) time.
+   */
   find(key, entry = this.root) {
     if (!entry) {
-      throw new Error('key not found!');
+      return null;
     }
 
     if (key > entry.key) {
@@ -74,6 +82,11 @@ class BinarySearchTree {
     return entry;
   }
 
+  /**
+   * Time Complexity
+   * You're going down to the bottom while comparing value of the node at most O(h) time.
+   * And setting parent, left or right pointer takes constant time, so it's O(h) time in total.
+   */
   insert(key, entry = this.root) {
     if (!key || typeof key !== 'number') {
       throw new Error('key is invalid!');
@@ -112,6 +125,11 @@ class BinarySearchTree {
     }
   }
 
+  /**
+   * Time Complexity
+   * In worst cases, you have to go to the bottom left (level of the leaves),
+   * and it takes O(h) time where h = height of the tree.
+   */
   findMin(entry = this.root) {
     if (entry.left) {
       return this.findMin(entry.left);
@@ -120,6 +138,10 @@ class BinarySearchTree {
     return entry;
   }
 
+  /**
+   * Time Complexity
+   * Same as `findMin`.
+   */
   findMax(entry = this.root) {
     if (entry.right) {
       return this.findMax(entry.right);
@@ -128,6 +150,11 @@ class BinarySearchTree {
     return entry;
   }
 
+  /**
+   * Time Complexity
+   * In worst cases, you have to go to the bottom (level of the leaves),
+   * and it takes O(h) time where h = height of the tree.
+   */
   nextLarger(node) {
     if (node.right) {
       return this.findMin(node.right);
@@ -147,6 +174,10 @@ class BinarySearchTree {
     return current.parent;
   }
 
+  /**
+   * Time Complexity
+   * Same as `nextLarger`.
+   */
   nextSmaller(node) {
     if (node.left) {
       return this.findMax(node.left);
@@ -166,8 +197,50 @@ class BinarySearchTree {
     return current.parent;
   }
 
-  delete() {
-    this.x = '';
+  /**
+   * Time Complexity
+   * In worst cases, `delete` takes O(h).
+   * Because it takes O(h) time to call `nextLarger`, otherwise it takes constant time.
+   */
+  delete(node) {
+    const { nodes } = this;
+
+    function remove(value) {
+      const idx = nodes.findIndex((_node) => _node.key === value);
+      nodes.splice(idx, 1, null);
+    }
+
+    // case no child / one child
+    if (!node.left || !node.right) {
+      if (node === node.parent.left) {
+        // eslint-disable-next-line no-param-reassign
+        node.parent.left = node.left || node.right;
+
+        if (node.parent.left) {
+          // eslint-disable-next-line no-param-reassign
+          node.parent.left.parent = node.parent;
+        }
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        node.parent.right = node.left || node.right;
+        if (node.parent.right) {
+          // eslint-disable-next-line no-param-reassign
+          node.parent.right.parent = node.parent;
+        }
+      }
+
+      // to check RI
+      remove(node.key);
+      return node;
+    }
+
+    // case both child
+    const nextLarger = this.nextLarger(node);
+    const tmp = nextLarger.key;
+    nextLarger.key = node.key;
+    // eslint-disable-next-line no-param-reassign
+    node.key = tmp;
+    return this.delete(nextLarger);
   }
 }
 

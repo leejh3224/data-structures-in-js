@@ -4,7 +4,7 @@ data structure implementation in JS
 
 ## TODO
 
-- [ ] Binary Search Tree
+- [x] Binary Search Tree
 - [ ] Heap Sort
 - [ ] Merge Sort
 - [ ] Binary Search
